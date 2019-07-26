@@ -2,11 +2,11 @@ package techcourse.myblog.domain.Article;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import techcourse.myblog.domain.User.User;
+import techcourse.myblog.domain.comment.Comment;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +21,13 @@ public class Article {
     private String title;
     private String contents;
     private String coverUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_article_to_user"))
+    private User author;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
 
     public Article(String title, String contents, String coverUrl) {
         this.title = title;
@@ -65,6 +72,10 @@ public class Article {
 
     public boolean matchId(long id) {
         return this.id == id;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @Override

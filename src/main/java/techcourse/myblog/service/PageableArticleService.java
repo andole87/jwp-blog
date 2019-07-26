@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import techcourse.myblog.domain.Article.Article;
 import techcourse.myblog.domain.Article.ArticleException;
+import techcourse.myblog.domain.User.User;
 import techcourse.myblog.dto.ArticleDto;
 import techcourse.myblog.repository.ArticlePageableRepository;
 
@@ -32,7 +33,8 @@ public class PageableArticleService {
     }
 
     @Transactional
-    public Long save(Article article) {
+    public Long save(User user, Article article) {
+        article.setAuthor(user);
         Article newArticle = articlePageableRepository.save(article);
         return newArticle.getId();
     }

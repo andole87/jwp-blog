@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ArticleRepositoryTest {
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private ArticlePageableRepository articleRepository;
 
     @BeforeEach
     void setUp() {
