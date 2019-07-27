@@ -1,12 +1,12 @@
-package techcourse.myblog.domain.Article;
+package techcourse.myblog.domain.article;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import techcourse.myblog.domain.comment.Comment;
+import techcourse.myblog.domain.user.User;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +21,13 @@ public class Article {
     private String title;
     private String contents;
     private String coverUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "fk_article_to_user"))
+    private User author;
+
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments;
 
     public Article(String title, String contents, String coverUrl) {
         this.title = title;
@@ -39,6 +46,18 @@ public class Article {
         return coverUrl;
     }
 
+    public void update(Article modifiedArticle) {
+        log.debug("article Ready to Save {}", modifiedArticle.getId());
+        this.title = modifiedArticle.title;
+        this.contents = modifiedArticle.contents;
+        this.coverUrl = modifiedArticle.coverUrl;
+        log.debug("article Save done", this.id);
+    }
+
+    public boolean matchId(long id) {
+        return this.id == id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -55,16 +74,12 @@ public class Article {
         return id;
     }
 
-    public void update(Article modifiedArticle) {
-        log.debug("Article Ready to Save {}", modifiedArticle.getId());
-        this.title = modifiedArticle.title;
-        this.contents = modifiedArticle.contents;
-        this.coverUrl = modifiedArticle.coverUrl;
-        log.debug("Article Save done", this.id);
+    public User getAuthor() {
+        return author;
     }
 
-    public boolean matchId(long id) {
-        return this.id == id;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     @Override

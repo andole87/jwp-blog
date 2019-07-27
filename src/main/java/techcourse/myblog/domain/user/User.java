@@ -1,8 +1,11 @@
-package techcourse.myblog.domain.User;
+package techcourse.myblog.domain.user;
 
+import techcourse.myblog.domain.article.Article;
 import techcourse.myblog.dto.UserDto;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +22,9 @@ public class User {
     @Column(unique = true)
     @Convert(converter = UserEmailConverter.class)
     private UserEmail email;
+
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles;
 
     protected User() {
     }
@@ -56,6 +62,24 @@ public class User {
 
     public boolean isMatchPassword(String password) {
         return this.password.match(password);
+    }
+
+    public void addArticle(Article article) {
+        if (articles == null) {
+            articles = new ArrayList<>();
+        }
+        articles.add(article);
+    }
+
+    public void addArticleAll(List<? extends Article> articles) {
+        if (this.articles == null) {
+            this.articles = new ArrayList<>();
+        }
+        this.articles.addAll(articles);
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 
     @Override
