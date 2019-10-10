@@ -16,7 +16,7 @@ public class UserEmail {
     }
 
     public UserEmail(String email) {
-        this.email = validate(email);
+        this.email = email;
     }
 
     public static UserEmail of(String email) {
